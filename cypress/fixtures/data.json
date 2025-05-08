@@ -1,0 +1,9 @@
+{
+  "defaultValue": 0,
+  "emptyValue": null,
+  "positiveValue": 1,
+  "negativeValue": -1,
+  "textValue": "test",
+  "booleanValue": true,
+  "floatValue": 1.5
+}

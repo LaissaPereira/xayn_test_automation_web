@@ -1,0 +1,40 @@
+# Node modules
+node_modules/
+
+# Cypress output
+cypress/screenshots/
+cypress/videos/
+
+# Test report output
+cypress/results/
+mochawesome-report/
+allure-results/
+coverage/
+
+# Environment files
+.env
+.env.*
+
+# TypeScript cache
+*.tsbuildinfo
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+
+# Build output (if applicable)
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Custom generated files
+/tmp

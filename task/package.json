@@ -1,0 +1,7 @@
+{
+    "name": "mini-project",
+    "version": "1.0.0",
+    "devDependencies": {
+      "http-server": "^14.1.1"
+    }
+  }
