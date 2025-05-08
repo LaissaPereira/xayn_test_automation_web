@@ -60,30 +60,59 @@ jobs:
       - name: Update test plan checklist
         run: node dist/.github/scripts/check-test-plans.js
 
-      - name: Commit updated README (main branch)
-        if: github.ref_name == 'main' && github.event_name != 'pull_request'
+      - name: Configure Git
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
+
+      - name: Update README for Pull Request
+        if: github.event_name == 'pull_request'
+        run: |
+            git fetch origin $GITHUB_HEAD_REF
+            git stash # Stash any uncommitted changes
+            git checkout $GITHUB_HEAD_REF
+            git pull origin $GITHUB_HEAD_REF --rebase
+            git stash pop || echo "No stash to apply"
+            git add README.md
+            git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
+            git push origin HEAD:$GITHUB_HEAD_REF
+
+      - name: Update README for Main Branch
+        if: github.ref_name == 'main' && github.event_name != 'pull_request'
+        run: |
+          git fetch origin main
+          git pull origin main --rebase
           git add README.md
           git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
           git push origin HEAD:main
-      
-      - name: Commit updated README (pull request branch)
-        if: github.event_name == 'pull_request'
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add README.md
-          git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
-          git push origin HEAD:$GITHUB_HEAD_REF
 
-      - name: Commit updated README (from master to main)
+      - name: Update README from Master to Main
         if: github.ref_name == 'master' && github.event_name != 'pull_request'
         run: |
-            git config --global user.name "github-actions"
-            git config --global user.email "actions@github.com"
+          git fetch origin master
+          git pull origin master --rebase
+          git add README.md
+          git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
+          git push origin master:main
+
+      - name: Update README for Main Branch
+        if: github.ref_name == 'main' && github.event_name != 'pull_request'
+        run: |
+            git fetch origin main
+            git stash # Stash any uncommitted changes
+            git pull origin main --rebase
+            git stash pop || echo "No stash to apply"
             git add README.md
             git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
-            git push origin master:main
-        
+            git push origin HEAD:main
+
+      - name: Update README from Master to Main
+        if: github.ref_name == 'master' && github.event_name != 'pull_request'
+        run: |
+          git fetch origin master
+          git stash # Stash any uncommitted changes
+          git pull origin master --rebase
+          git stash pop || echo "No stash to apply"
+          git add README.md
+          git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
+          git push origin master:main
