@@ -46,7 +46,7 @@ jobs:
           grep 'Tests:' cypress_output.txt > summary.txt
 
       - name: Compile TypeScript scripts
-        run: npx tsc
+        run: npx tsc -p tsconfig.scripts.json
 
       - name: Update README with Cypress summary
         run: node dist/.github/scripts/update-readme.js
