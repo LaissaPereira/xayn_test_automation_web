@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 // Path to the Cypress output (cypress_output.txt)
 const cypressOutputPath = 'cypress_output.txt';
