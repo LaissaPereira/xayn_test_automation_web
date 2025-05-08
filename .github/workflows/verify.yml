@@ -28,12 +28,12 @@ jobs:
           http-server task -p 3000 > server.log 2>&1 &
           sleep 2
           cat server.log  # 👈 Log output from the server
-          
+
       - name: Try curl
         run: curl -I http://localhost:3000 || echo "Server not responding"
 
-      - name: Wait for server to be ready
-        run: npx wait-on http://localhost:3000
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000 --httpTimeout 10000 --timeout 30000 --verbose
 
       - name: Run Cypress tests
         run: npx cypress run
