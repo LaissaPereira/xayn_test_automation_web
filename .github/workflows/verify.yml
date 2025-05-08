@@ -35,6 +35,19 @@ jobs:
         run: npx cypress run > cypress_output.txt
         continue-on-error: true
 
+      - name: Capture Cypress exit code
+        id: cypress
+        run: |
+          npx cypress run > cypress_output.txt
+          echo "exitcode=$?" >> $GITHUB_OUTPUT
+        continue-on-error: true
+      
+      # Later step: fail if tests failed
+      - name: Fail if Cypress tests failed
+        if: steps.cypress.outputs.exitcode != '0'
+        run: exit 1
+      
+
       - name: Upload Cypress videos on failure
         if: failure()
         uses: actions/upload-artifact@v4
