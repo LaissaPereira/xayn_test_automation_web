@@ -32,7 +32,7 @@ jobs:
         run: npx wait-on http://127.0.0.1:3000 --httpTimeout 10000 --timeout 30000 --verbose
 
       - name: Run Cypress tests
-        run: npx cypress run
+        run: npx cypress run > cypress_output.txt
 
       - name: Upload Cypress videos on failure
         if: failure()
@@ -40,3 +40,24 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos/
+
+      - name: Save Cypress summary
+        run: |
+          grep 'Tests:' cypress_output.txt > summary.txt
+
+      - name: Compile TypeScript scripts
+        run: npx tsc
+
+      - name: Update README with Cypress summary
+        run: node dist/.github/scripts/update-readme.js
+
+      - name: Update test plan checklist
+        run: node dist/.github/scripts/check-test-plans.js
+
+      - name: Commit updated README
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add README.md
+          git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
+          git push
