@@ -1,14 +1,19 @@
 {
     "compilerOptions": {
       "baseUrl": ".",
-      "target": "es6",
-      "lib": ["es6", "dom"],
-      "types": ["cypress"],
+      "target": "es2017",
+      "lib": ["es2017", "dom"],
+      "types": ["cypress","node"],
       "moduleResolution": "node",
       "resolveJsonModule": true,
       "strict": true,
-      "esModuleInterop": true
+      "esModuleInterop": true,
+      "rootDir": ".",
+      "outDir": "dist"              
     },
-    "include": ["cypress/**/*.ts"]
+    "include": [
+      "cypress/**/*.ts",
+      ".github/scripts/**/*.ts"
+    ]
   }
   
