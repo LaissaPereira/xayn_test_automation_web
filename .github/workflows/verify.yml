@@ -52,6 +52,12 @@ jobs:
       - name: Save Cypress summary
         run: |
             grep 'Tests:' dist/.github/scripts/cypress_output.txt > summary.txt
+      
+      - name: Ensure Required Files Exist
+        run: |
+              mkdir -p dist/.github/scripts
+              echo "Placeholder README content" > dist/.github/scripts/README.md
+          
 
       - name: Compile TypeScript scripts
         run: npx tsc -p tsconfig.json
