@@ -68,12 +68,14 @@ jobs:
       - name: Update README for Pull Request
         if: github.event_name == 'pull_request'
         run: |
-          git fetch origin $GITHUB_HEAD_REF
-          git checkout $GITHUB_HEAD_REF
-          git pull origin $GITHUB_HEAD_REF --rebase
-          git add README.md
-          git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
-          git push origin HEAD:$GITHUB_HEAD_REF
+            git fetch origin $GITHUB_HEAD_REF
+            git stash # Stash any uncommitted changes
+            git checkout $GITHUB_HEAD_REF
+            git pull origin $GITHUB_HEAD_REF --rebase
+            git stash pop || echo "No stash to apply"
+            git add README.md
+            git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
+            git push origin HEAD:$GITHUB_HEAD_REF
 
       - name: Update README for Main Branch
         if: github.ref_name == 'main' && github.event_name != 'pull_request'
