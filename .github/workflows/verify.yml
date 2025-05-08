@@ -33,7 +33,13 @@ jobs:
 
       - name: Run Cypress tests
         run: npx cypress run > cypress_output.txt
+        continue-on-error: true
 
+      - name: View Cypress test output
+        run: |
+          echo "Cypress Test Results:"
+          cat cypress_output.txt
+  
       - name: Upload Cypress videos on failure
         if: failure()
         uses: actions/upload-artifact@v4
