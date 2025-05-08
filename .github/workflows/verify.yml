@@ -32,13 +32,15 @@ jobs:
         run: npx wait-on http://127.0.0.1:3000 --httpTimeout 10000 --timeout 30000 --verbose
 
       - name: Run Cypress tests
-        run: npx cypress run > cypress_output.txt
+        run: |
+          mkdir -p dist/.github/scripts && \
+          npx cypress run > dist/.github/scripts/cypress_output.txt 2>&1
         continue-on-error: true
 
       - name: View Cypress test output
         run: |
-          echo "Cypress Test Results:"
-          cat cypress_output.txt
+         echo "Cypress Test Results:"
+         cat dist/.github/scripts/cypress_output.txt
   
       - name: Upload Cypress videos on failure
         if: failure()
@@ -49,7 +51,13 @@ jobs:
 
       - name: Save Cypress summary
         run: |
-          grep 'Tests:' cypress_output.txt > summary.txt
+            grep 'Tests:' dist/.github/scripts/cypress_output.txt > summary.txt
+      
+      - name: Ensure Required Files Exist
+        run: |
+              mkdir -p dist/.github/scripts
+              echo "Placeholder README content" > dist/.github/scripts/README.md
+          
 
       - name: Compile TypeScript scripts
         run: npx tsc -p tsconfig.json

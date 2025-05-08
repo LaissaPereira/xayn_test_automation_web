@@ -1,20 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 
-// Path to the Cypress output (cypress_output.txt)
-const cypressOutputPath = 'cypress_output.txt';
+const cypressOutputPath = path.join(__dirname, 'cypress_output.txt');
+const readmePath = path.join(__dirname, 'README.md');
 
 // Read the Cypress output file
 const cypressOutput = fs.readFileSync(cypressOutputPath, 'utf-8');
 
-// Extract relevant data (using a regular expression for simple summary extraction)
-const summaryRegex = /(\d+) tests? passed.*?(\d+) failed.*?(\d+) skipped.*?(\d+) total/i;
+// Regex to extract summary numbers (adjust if needed)
+const summaryRegex = /(\d+)\s+tests?\s+passed.*?(\d+)\s+failed.*?(\d+)\s+skipped.*?(\d+)\s+total/i;
 const match = cypressOutput.match(summaryRegex);
 
 let summary = 'No Cypress test results found.';
 
 if (match) {
-  const [_, passed, failed, skipped, total] = match;
+  const [, passed, failed, skipped, total] = match;
   summary = `
 ### Cypress Test Summary
 
@@ -22,35 +22,24 @@ if (match) {
 - **Passed**: ${passed}
 - **Failed**: ${failed}
 - **Skipped**: ${skipped}
-  `;
+  `.trim();
 }
 
-// Path to README.md
-const readmePath = 'README.md';
-
-// Read the README file content
+// Read the README file
 let readmeContent = fs.readFileSync(readmePath, 'utf-8');
 
-// Markers for inserting the Cypress test summary
-const markerStart = "<!-- TEST-RESULT-START -->";
-const markerEnd = "<!-- TEST-RESULT-END -->";
+// Markers for updating test result section
+const markerStart = '<!-- TEST-RESULT-START -->';
+const markerEnd = '<!-- TEST-RESULT-END -->';
 
-// Create the new section for the test summary
-const newSection = `${markerStart}\n${summary}${markerEnd}`;
-
-// Regular expression to match the section if it already exists
+const newSection = `${markerStart}\n${summary}\n${markerEnd}`;
 const regex = new RegExp(`${markerStart}[\\s\\S]*?${markerEnd}`, 'm');
 
-// Replace or append the section
-if (readmeContent.match(regex)) {
-  // If the section already exists, replace it
+if (regex.test(readmeContent)) {
   readmeContent = readmeContent.replace(regex, newSection);
 } else {
-  // If it doesn't exist, append the new section
   readmeContent += `\n\n${newSection}`;
 }
 
-// Write the updated README back to the file
-fs.writeFileSync(readmePath, readmeContent);
-
-console.log('README.md has been updated with the Cypress test results.');
+fs.writeFileSync(readmePath, readmeContent, 'utf-8');
+console.log('✅ README.md updated with Cypress test results.');
