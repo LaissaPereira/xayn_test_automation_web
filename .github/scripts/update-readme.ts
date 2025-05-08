@@ -28,18 +28,18 @@ if (match) {
 // Read the README file
 let readmeContent = fs.readFileSync(readmePath, 'utf-8');
 
-// Markers for updating test result section
-const markerStart = '<!-- TEST-RESULT-START -->';
-const markerEnd = '<!-- TEST-RESULT-END -->';
+// Replace between TEST-RESULT markers
+const startMarker = '<!-- TEST-RESULT-START -->';
+const endMarker = '<!-- TEST-RESULT-END -->';
+const resultRegex = new RegExp(`${startMarker}[\\s\\S]*?${endMarker}`, 'm');
+const newSection = `${startMarker}\n${summary}\n${endMarker}`;
 
-const newSection = `${markerStart}\n${summary}\n${markerEnd}`;
-const regex = new RegExp(`${markerStart}[\\s\\S]*?${markerEnd}`, 'm');
-
-if (regex.test(readmeContent)) {
-  readmeContent = readmeContent.replace(regex, newSection);
+// Replace or append
+if (resultRegex.test(readmeContent)) {
+  readmeContent = readmeContent.replace(resultRegex, newSection);
 } else {
   readmeContent += `\n\n${newSection}`;
 }
 
 fs.writeFileSync(readmePath, readmeContent, 'utf-8');
-console.log('✅ README.md updated with Cypress test results.');
+console.log('✅ Cypress test results updated in README.');

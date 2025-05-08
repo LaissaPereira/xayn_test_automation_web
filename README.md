@@ -13,8 +13,12 @@
 
 
 <!-- TEST-RESULT-START -->
-No Cypress test results found.<!-- TEST-RESULT-END -->
+<!-- TEST-RESULT-END -->
 
 ## Verify test Cypress
 ![Cypress Tests](https://github.com/LaissaPereira/xayn_test_automation_web/actions/workflows/verify.yml/badge.svg)
 
+
+Run local
+npm install
+npx cypress run
