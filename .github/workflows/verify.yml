@@ -92,3 +92,25 @@ jobs:
           git add README.md
           git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
           git push origin master:main
+
+      - name: Update README for Main Branch
+        if: github.ref_name == 'main' && github.event_name != 'pull_request'
+        run: |
+            git fetch origin main
+            git stash # Stash any uncommitted changes
+            git pull origin main --rebase
+            git stash pop || echo "No stash to apply"
+            git add README.md
+            git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
+            git push origin HEAD:main
+
+      - name: Update README from Master to Main
+        if: github.ref_name == 'master' && github.event_name != 'pull_request'
+        run: |
+          git fetch origin master
+          git stash # Stash any uncommitted changes
+          git pull origin master --rebase
+          git stash pop || echo "No stash to apply"
+          git add README.md
+          git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
+          git push origin master:main
