@@ -32,8 +32,9 @@ jobs:
         run: npx wait-on http://127.0.0.1:3000 --httpTimeout 10000 --timeout 30000 --verbose
 
       - name: Run Cypress tests
-        run: mkdir -p dist/.github/scripts
-            npx cypress run > dist/.github/scripts/cypress_output.txt
+        run: |
+          mkdir -p dist/.github/scripts && \
+          npx cypress run > dist/.github/scripts/cypress_output.txt 2>&1
         continue-on-error: true
 
       - name: View Cypress test output
