@@ -66,4 +66,4 @@ jobs:
           git config --global user.email "actions@github.com"
           git add README.md
           git commit -m "Update README with Cypress results and checklist" || echo "No changes to commit"
-          git push
+          git push origin ${{ github.head_ref }}
