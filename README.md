@@ -1,4 +1,4 @@
-## ✅ Test Coverage
+## ✅ Tests Coverage
 
 - [x] Created Cypress tests for Counter Page
 - [x] GitHub Actions CI on Pull Requests
