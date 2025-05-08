@@ -6,7 +6,7 @@ describe('Counter scenarios', () => {
     beforeEach(() => {
         counterPage.userNavigatesTo();
     });
-    it("T01 - User should be navigate to the counter page, display increment and descrement button and counter display with default value 0", () => {
+    it("T01 - User should be navigate to the counter page, display increment and decrement button and counter display with default value 0", () => {
        
         counterPage.assertCounterValue(counterPage.data.defaultValue);
         counterPage.assertIncrementButton();
