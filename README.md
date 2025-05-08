@@ -6,6 +6,6 @@
 - [x] Test Plan with counter scenarios: [`test-plan/counter-tests.md`](./test-plan/counter-tests.md)
 
 
-## CI Status
+## Verify test Cypress
 ![Cypress Tests](https://github.com/LaissaPereira/xayn_test_automation_web/actions/workflows/verify.yml/badge.svg)
 
